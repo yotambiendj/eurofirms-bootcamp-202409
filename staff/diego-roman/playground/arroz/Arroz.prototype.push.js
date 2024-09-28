@@ -1,4 +1,4 @@
-var Arroz0 function () { this.length = 0 }
+var Arroz = function () { this.length = 0 }
 
 Arroz0.prototpe.push = function (element) {
     this[this.length] = element
