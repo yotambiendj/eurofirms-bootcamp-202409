@@ -1,75 +1,34 @@
-const useState = React.useState
-const useEffect = React.useEffect
-
-function Home(props) {
-    console.log('Home -> render')
-
-    /*
-    props -> { onLogout }
-    */
-
-    const nameState = useState(null)
-    const name = nameState[0]
-    const setName = nameState[1]
-
-    const postsState = useState([])
-    const posts = postsState[0]
-    const setPosts = postsState[1]
-
-    console.log('Home -> state: name = ' + name)
-
-    useEffect(() => {
-        try {
-            getUserName()
-                .then(name => setName(name))
-                .catch(error => {
-                    alert(error.message)
-
-                    console.error(error)
-                })
-
-            getPosts()
-                .then(posts => setPosts(posts))
-                .catch(error => {
-                    alert(error.message)
-
-                    console.error(error)
-                })
-        } catch (error) {
-            alert(error.message)
-
-            console.error(error)
-        }
-    }, [])
+function CreatePost(props) {
+    console.log('CreatePost -> render')
 
     return <main>
-        <h2>Home</h2>
+        <h2>Create Post</h2>
 
-        {name && <h3>Hello, {name}!</h3>}
+        <form onSubmit={event => {
+            event.preventDefault()
 
-        <button type="button" onClick={() => {
+            const form = event.target
+
+            const image = form.image.value
+            const text = form.text.value
+
             try {
-                logoutUser()
+                createPost(image, text)
 
-                props.onLogout()
+                props.onCreated()
             } catch (error) {
                 alert(error.message)
 
                 console.error(error)
             }
-        }}>Logout</button>
+        }}>
+            <label htmlFor="image">Image</label>
+            <input type="url" id="image" />
 
-        <button type="button" onClick={() => props.onCreatePost()}>+</button>
+            <label htmlFor="text">Text</label>
+            <input type="text" id="text" />
 
-        {posts.length && <section>
-            {posts.map(post =>
-                <article>
-                    <h3>{post.author}</h3>
-                    <img src={post.image} />
-                    <p>{post.text}</p>
-                    <time>{post.date}</time>
-                </article>
-            )}
-        </section>}
+            <button type="submit">Create</button>
+        </form>
     </main>
 }
