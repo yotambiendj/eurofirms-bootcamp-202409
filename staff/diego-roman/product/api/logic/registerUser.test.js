@@ -1,16 +1,14 @@
-import mongoose from 'mongoose'
-import registerUser from './registerUser.js'
+fetch('http://localhost:8080/users/auth', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: '{"username":"peterpan","password":"123123123"}'
+})
+    .then(response => {
+        console.log(response.status)
 
-mongoose.connect('mongodb://127.0.0.1:27017/test')
-    .then(() => {
-        try {
-            return registerUser('Peter Pan', 'peter@pan.com', 'peterpan', '123123123')
-                .then(() => console.log('user registered'))
-                .catch(error => console.error(error))
-        } catch (error) {
-            console.error(error)
-        }
+        return response.text()
     })
-    .then(() => console.log('the end'))
+    .then(body => console.log(body))
     .catch(error => console.error(error))
-    .finally(() => mongoose.disconnect())
