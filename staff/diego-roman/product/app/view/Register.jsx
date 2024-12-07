@@ -1,18 +1,16 @@
-import registerUser from '../logic/registerUser'
+import { errors } from 'com'
 
-import './Register.css'
+const { DuplicityError, SystemError, ValidationError } = errors
+
+import registerUser from '../logic/registerUser'
 
 function Register(props) {
     console.log('Register -> render')
 
-    /*
-    props -> { onLoginClick, onRegisterSuccess }
-    */
-
     return <main>
         <h2>Register</h2>
 
-        <form className="register-form" onSubmit={event => {
+        <form onSubmit={event => {
             event.preventDefault()
 
             const form = event.target
@@ -26,12 +24,18 @@ function Register(props) {
                 registerUser(name, email, username, password)
                     .then(() => props.onRegisterSuccess())
                     .catch(error => {
-                        alert(error.message)
+                        if (error instanceof DuplicityError)
+                            alert(error.message)
+                        else if (error instanceof SystemError)
+                            alert('sorry, there was a problem. try again later.')
 
                         console.error(error)
                     })
             } catch (error) {
-                alert(error.message)
+                if (error instanceof ValidationError)
+                    alert(error.message)
+                else
+                    alert('sorry, there was a problem. try again later.')
 
                 console.error(error)
             }
