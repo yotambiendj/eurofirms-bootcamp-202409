@@ -1,8 +1,8 @@
 import { User, Post } from '../data/models.js'
+import { validate } from 'com'
 
 function getPosts(userId) {
-    if (typeof userId !== 'string') throw new Error('invalid userId')
-
+    validate.userId(userId)
     return Promise.all([
         User.findById(userId).lean(),
         Post.find({}, '-__v').populate('author', 'username').sort({ date: -1 }).lean()

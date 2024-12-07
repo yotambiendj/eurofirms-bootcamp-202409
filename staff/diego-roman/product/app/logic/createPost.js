@@ -1,6 +1,7 @@
+import { validate } from 'com'
 function createPost(image, text) {
-    if (typeof image !== 'string') throw new Error('invalid image')
-    if (typeof text !== 'string') throw new Error('invalid text')
+    validate.image(image)
+    validate.text(text)
 
     return fetch('http://localhost:8080/posts', {
         method: 'POST',

@@ -1,11 +1,10 @@
 import { User } from '../data/models.js'
+import { validate } from 'com'
 
 function authenticateUser(username, password) {
-    if (typeof username !== 'string') throw new Error('invalid username')
-    if (username.length < 4) throw new Error('invalid username length')
+    validate.username(username)
+    validate.password(password)
 
-    if (typeof password !== 'string') throw new Error('invalid password')
-    if (password.length < 8) throw new Error('invalid password length')
 
     return User.findOne({ username, password })
         .catch(error => { throw new Error(error.message) })
